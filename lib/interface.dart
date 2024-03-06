@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:diarsaba/body.dart';
-import 'dart:async';
 
 class Bodys {
   late void Function() setstate;
@@ -77,9 +76,9 @@ class Bodys {
         y: 50,
         s: 0,
         key: "pointerX",
-        render: Text(
+        render: const Text(
           "pointerX: 0",
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 14,
               backgroundColor: Color.fromARGB(255, 245, 245, 245)),
         ),
@@ -209,11 +208,10 @@ class Bodys {
       bodymap.remove(soulmap["pointed"][soulmap["pointed"].length - 1]);
     },
     "ocultar": () {
-      print("fincion ocultar");
       bodymap.remove(soulmap["pointed"][soulmap["pointed"].length - 1]);
     },
     "ultimo": () {
-      print("fincion ultimo ${soulmap["pointed"]}");
+      //soulmap["pointed"]
     },
     "pointermove": () {
       pointermove();
@@ -226,19 +224,6 @@ class Bodys {
     "asing": () {},
     "compatible": () {}
   };
-
-  bool touched = false;
-  bool hoverchild = false;
-
-  dynamic drag;
-  dynamic edit;
-
-  late int ontime = 0;
-  late bool canlong = true;
-
-  late Timer timerGlobal;
-  late int onTimeGlobal = 0;
-  late bool canLongGlobal = true;
 
   void pointermove() {
     soulmap["pos1"] = soulmap["pos3"] - soulmap["x"];
