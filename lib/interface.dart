@@ -214,37 +214,25 @@ class Bodys {
       //soulmap["pointed"]
     },
     "pointermove": () {
-      pointermove();
+      soulmap["pos1"] = soulmap["pos3"] - soulmap["pointerx"];
+      soulmap["pos2"] = soulmap["pos4"] - soulmap["pointery"];
+      soulmap["pos3"] = soulmap["pointerx"];
+      soulmap["pos4"] = soulmap["pointery"];
+
+      soulmap["offsetLeft"] -= soulmap["pos1"];
+      soulmap["offsetTop"] -= soulmap["pos2"];
     },
     "pointerdown": () {
-      pointerdown();
+      soulmap["pos3"] = soulmap["pointerx"];
+      soulmap["pos4"] = soulmap["pointery"];
     },
     "pointerup": () {},
-    "pointerhover": () {},
+    "pointerhover": () {
+      (bodymap["pointerX"] as Bodyd).copyWith(s: soulmap["pointerx"]);
+    },
     "asing": () {},
     "compatible": () {}
   };
-
-  void pointermove() {
-    soulmap["pos1"] = soulmap["pos3"] - soulmap["x"];
-    soulmap["pos2"] = soulmap["pos4"] - soulmap["y"];
-    soulmap["pos3"] = soulmap["x"];
-    soulmap["pos4"] = soulmap["y"];
-
-    soulmap["offsetLeft"] -= soulmap["pos1"];
-    soulmap["offsetTop"] -= soulmap["pos2"];
-  }
-
-  void pointerdown() {
-    soulmap["pos3"] = soulmap["x"];
-    soulmap["pos4"] = soulmap["y"];
-  }
-
-  void pointerup(double x, double y) {}
-
-  void pointerhover(double x, double y) {
-    (bodymap["pointerX"] as Bodyd).copyWith(s: x);
-  }
 
   List<Widget> bodyswidgets() {
     List<Widget> temp = [];
