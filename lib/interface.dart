@@ -89,7 +89,8 @@ class Bodys {
   late Map<String, dynamic> soulmap = {
     "pointerx": 0,
     "pointery": 0,
-    "pointed": [],
+    //this below will be created on body interaccion or user interface
+    "pointer": [],
     "pos1": 0,
     "pos2": 0,
     "pos3": 0,
@@ -230,8 +231,26 @@ class Bodys {
     "pointerhover": () {
       (bodymap["pointerX"] as Bodyd).copyWith(s: soulmap["pointerx"]);
     },
-    "asing": () {},
-    "compatible": () {}
+    "compatible": () {},
+    "reduce": () {
+      soulmap[soulmap["pointer"][0]] =
+          soulmap[soulmap["pointer"][1]] - soulmap[soulmap["pointer"][2]];
+    },
+    "add": () {
+      soulmap[soulmap["pointer"][0]] =
+          soulmap[soulmap["pointer"][1]] + soulmap[soulmap["pointer"][2]];
+    },
+    "multi": () {
+      soulmap[soulmap["pointer"][0]] =
+          soulmap[soulmap["pointer"][1]] * soulmap[soulmap["pointer"][2]];
+    },
+    "div": () {
+      soulmap[soulmap["pointer"][0]] =
+          soulmap[soulmap["pointer"][1]] / soulmap[soulmap["pointer"][2]];
+    },
+    "asing": () {
+      soulmap[soulmap["pointer"][0]] = soulmap[soulmap["pointer"][1]];
+    },
   };
 
   List<Widget> bodyswidgets() {
