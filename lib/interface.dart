@@ -10,7 +10,7 @@ class Bodys {
   final _controller = TextEditingController(text: "A");
 
   // for widgets
-  late Map<String, dynamic> bodymap = {
+  late Map<String, dynamic> viewmap = {
     "string": Body(
         x: 0,
         y: 50,
@@ -86,7 +86,7 @@ class Bodys {
   };
 
   // for data
-  late Map<String, dynamic> soulmap = {
+  late Map<String, dynamic> datamap = {
     "pointerx": 0,
     "pointery": 0,
     //this below will be created on body interaccion or user interface
@@ -102,7 +102,7 @@ class Bodys {
   // for functions
   late Map<String, dynamic> funcmap = {
     "double": () {
-      bodymap.addAll({
+      viewmap.addAll({
         "A": Body(
             x: 10,
             y: 10,
@@ -119,7 +119,7 @@ class Bodys {
                   }
                 },
                 onSubmitted: (t) {
-                  bodymap.addAll({
+                  viewmap.addAll({
                     t: Bodyd(
                         x: 10,
                         y: 100,
@@ -135,7 +135,7 @@ class Bodys {
                         mode: "text"),
                   });
 
-                  bodymap.remove("A");
+                  viewmap.remove("A");
                   _controller.text = "A";
 
                   setstate();
@@ -154,7 +154,7 @@ class Bodys {
       });
     },
     "string": () {
-      bodymap.addAll({
+      viewmap.addAll({
         "A": Body(
             x: 10,
             y: 10,
@@ -171,7 +171,7 @@ class Bodys {
                   }
                 },
                 onSubmitted: (t) {
-                  bodymap.addAll({
+                  viewmap.addAll({
                     t: Body(
                         x: 10,
                         y: 100,
@@ -187,7 +187,7 @@ class Bodys {
                         mode: "text"),
                   });
 
-                  bodymap.remove("A");
+                  viewmap.remove("A");
                   _controller.text = "A";
 
                   setstate();
@@ -206,77 +206,80 @@ class Bodys {
       });
     },
     "borrar": () {
-      bodymap.remove(soulmap["pointed"][soulmap["pointed"].length - 1]);
+      viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
     "ocultar": () {
-      bodymap.remove(soulmap["pointed"][soulmap["pointed"].length - 1]);
+      viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
     "ultimo": () {
-      //soulmap["pointed"]
+      //datamap["pointer"]
     },
     "pointermove": () {
-      soulmap["pos1"] = soulmap["pos3"] - soulmap["pointerx"];
-      soulmap["pos2"] = soulmap["pos4"] - soulmap["pointery"];
-      soulmap["pos3"] = soulmap["pointerx"];
-      soulmap["pos4"] = soulmap["pointery"];
+      datamap["pos1"] = datamap["pos3"] - datamap["pointerx"];
+      datamap["pos2"] = datamap["pos4"] - datamap["pointery"];
+      datamap["pos3"] = datamap["pointerx"];
+      datamap["pos4"] = datamap["pointery"];
 
-      soulmap["offsetLeft"] -= soulmap["pos1"];
-      soulmap["offsetTop"] -= soulmap["pos2"];
+      datamap["offsetLeft"] -= datamap["pos1"];
+      datamap["offsetTop"] -= datamap["pos2"];
     },
     "pointerdown": () {
-      soulmap["pos3"] = soulmap["pointerx"];
-      soulmap["pos4"] = soulmap["pointery"];
+      datamap["pos3"] = datamap["pointerx"];
+      datamap["pos4"] = datamap["pointery"];
     },
     "pointerup": () {},
     "pointerhover": () {
-      (bodymap["pointerX"] as Bodyd).copyWith(s: soulmap["pointerx"]);
+      (viewmap["pointerX"] as Bodyd).copyWith(s: datamap["pointerx"]);
     },
     "compatible": () {},
     "reduce": () {
-      soulmap[soulmap["pointer"][0]] =
-          soulmap[soulmap["pointer"][1]] - soulmap[soulmap["pointer"][2]];
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] - datamap[datamap["pointer"][2]];
     },
     "add": () {
-      soulmap[soulmap["pointer"][0]] =
-          soulmap[soulmap["pointer"][1]] + soulmap[soulmap["pointer"][2]];
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] + datamap[datamap["pointer"][2]];
     },
     "multi": () {
-      soulmap[soulmap["pointer"][0]] =
-          soulmap[soulmap["pointer"][1]] * soulmap[soulmap["pointer"][2]];
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] * datamap[datamap["pointer"][2]];
     },
     "div": () {
-      soulmap[soulmap["pointer"][0]] =
-          soulmap[soulmap["pointer"][1]] / soulmap[soulmap["pointer"][2]];
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] / datamap[datamap["pointer"][2]];
     },
     "asing": () {
-      soulmap[soulmap["pointer"][0]] = soulmap[soulmap["pointer"][1]];
+      datamap[datamap["pointer"][0]] = datamap[datamap["pointer"][1]];
     },
   };
 
-  List<Widget> bodyswidgets() {
+  List<Widget> viewed() {
     List<Widget> temp = [];
 
-    bodymap.forEach((key, _) {
+    viewmap.forEach((key, _) {
       temp.add(Positioned(
-        top: bodymap[key].y,
-        left: bodymap[key].x,
+        top: viewmap[key].y,
+        left: viewmap[key].x,
         child: Listener(
-          onPointerDown: (e) {
-            soulmap["offsetLeft"] = bodymap[key].x;
-            soulmap["offsetTop"] = bodymap[key].y;
-          },
-          onPointerUp: (e) {
-            if (funcmap.containsKey(bodymap[key].s)) {
-              funcmap[bodymap[key].s]();
-            }
 
-            soulmap["pointed"].add(bodymap[key].s);
+          onPointerDown: (e) {
+            datamap["offsetLeft"] = viewmap[key].x;
+            datamap["offsetTop"] = viewmap[key].y;
           },
+
+          onPointerUp: (e) {
+            if (funcmap.containsKey(viewmap[key].s)) {
+              funcmap[viewmap[key].s]();
+            }
+            datamap["pointer"].add(viewmap[key].s);
+          },
+
           onPointerMove: (e) {
-            bodymap[key] = bodymap[key]
-                .copyWith(x: soulmap["offsetLeft"], y: soulmap["offsetTop"]);
+            viewmap[key] = viewmap[key]
+                .copyWith(x: datamap["offsetLeft"], y: datamap["offsetTop"]);
           },
-          child: bodymap[key].render,
+
+          child: viewmap[key].render,
         ),
       ));
     });

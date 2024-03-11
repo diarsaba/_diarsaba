@@ -38,7 +38,7 @@ class Bodys {
 
   late Map<String, dynamic> map;
   late Map<String, dynamic> bodymap;
-  late Map<String, dynamic> soulmap;
+  late Map<String, dynamic> datamap;
   late Map<String, dynamic> funcmap;
 
   final _focus = FocusNode();

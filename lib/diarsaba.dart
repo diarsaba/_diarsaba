@@ -26,32 +26,32 @@ class _DiarsabaState extends State<Diarsaba> {
   Widget build(BuildContext context) {
     return Listener(
       onPointerMove: (event) {
-        bodys.soulmap["pointerx"] = event.position.dx;
-        bodys.soulmap["pointery"] = event.position.dy;
+        bodys.datamap["pointerx"] = event.position.dx;
+        bodys.datamap["pointery"] = event.position.dy;
 
         bodys.funcmap["pointermove"]();
 
         setState(() {});
       },
       onPointerDown: (event) {
-        bodys.soulmap["pointerx"] = event.position.dx;
-        bodys.soulmap["pointery"] = event.position.dy;
+        bodys.datamap["pointerx"] = event.position.dx;
+        bodys.datamap["pointery"] = event.position.dy;
 
         bodys.funcmap["pointerdown"]();
 
         setState(() {});
       },
       onPointerUp: (event) {
-        /* bodys.soulmap["pointerx"] = event.position.dx;
-        bodys.soulmap["pointery"] = event.position.dy; */
+        /* bodys.datamap["pointerx"] = event.position.dx;
+        bodys.datamap["pointery"] = event.position.dy; */
 
         bodys.funcmap["pointerup"]();
 
         setState(() {});
       },
       onPointerHover: (event) {
-        bodys.soulmap["pointerx"] = event.position.dx;
-        bodys.soulmap["pointery"] = event.position.dy;
+        bodys.datamap["pointerx"] = event.position.dx;
+        bodys.datamap["pointery"] = event.position.dy;
 
         bodys.funcmap["pointerhover"]();
         setState(() {});
@@ -59,7 +59,7 @@ class _DiarsabaState extends State<Diarsaba> {
       child: Scaffold(
         body: Stack(
           children: [
-            ...bodys.bodyswidgets(),
+            ...bodys.viewed(),
           ],
         ),
       ),
