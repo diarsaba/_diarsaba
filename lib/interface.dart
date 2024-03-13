@@ -71,6 +71,30 @@ class Bodys {
               backgroundColor: Color.fromARGB(255, 245, 245, 245)),
         ),
         mode: "text"),
+    "offsetLeft": Bodyd(
+        x: 0,
+        y: 100,
+        s: 0,
+        key: "offsetLeft",
+        render: const Text(
+          "offsetLeft: 0",
+          style: TextStyle(
+              fontSize: 14,
+              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+        ),
+        mode: "text"),
+    "offsetTop": Bodyd(
+        x: 100,
+        y: 100,
+        s: 0,
+        key: "offsetTop",
+        render: const Text(
+          "offsetTop: 0",
+          style: TextStyle(
+              fontSize: 14,
+              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+        ),
+        mode: "text"),
     "pointerX": Bodyd(
         x: 260,
         y: 50,
@@ -209,28 +233,19 @@ class Bodys {
       viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
     "ocultar": () {
+      print(datamap["pointer"]);
       viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
     "ultimo": () {
       //datamap["pointer"]
     },
-    "pointermove": () {
-      datamap["pos1"] = datamap["pos3"] - datamap["pointerx"];
-      datamap["pos2"] = datamap["pos4"] - datamap["pointery"];
-      datamap["pos3"] = datamap["pointerx"];
-      datamap["pos4"] = datamap["pointery"];
-
-      datamap["offsetLeft"] -= datamap["pos1"];
-      datamap["offsetTop"] -= datamap["pos2"];
-    },
+    
     "pointerdown": () {
       datamap["pos3"] = datamap["pointerx"];
       datamap["pos4"] = datamap["pointery"];
     },
     "pointerup": () {},
-    "pointerhover": () {
-      (viewmap["pointerX"] as Bodyd).copyWith(s: datamap["pointerx"]);
-    },
+    
     "compatible": () {},
     "reduce": () {
       datamap[datamap["pointer"][0]] =
@@ -251,6 +266,50 @@ class Bodys {
     "asing": () {
       datamap[datamap["pointer"][0]] = datamap[datamap["pointer"][1]];
     },
+    "onPointerDown": () {
+      datamap["offsetLeft"] = viewmap[datamap["key"]].x;
+      datamap["offsetTop"] = viewmap[datamap["key"]].y;
+    },
+    "onPointerUp": () {
+      if (funcmap.containsKey(viewmap[datamap["key"]].s)) {
+        funcmap[viewmap[datamap["key"]].s]();
+      }
+      datamap["pointer"].add(viewmap[datamap["key"]].s);
+    },
+    "onPointerMove": () {
+      viewmap[datamap["key"]] = viewmap[datamap["key"]]
+          .copyWith(x: datamap["offsetLeft"], y: datamap["offsetTop"]);
+    },
+    "pointerhover": () {
+      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
+        s: datamap["pointerx"],
+        render: Text(
+          "pointerX: ${datamap["pointerx"]}",
+          style: const TextStyle(
+              fontSize: 14,
+              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+        ),
+      );
+    },
+    "pointermove": () {
+      datamap["pos1"] = datamap["pos3"] - datamap["pointerx"];
+      datamap["pos2"] = datamap["pos4"] - datamap["pointery"];
+      datamap["pos3"] = datamap["pointerx"];
+      datamap["pos4"] = datamap["pointery"];
+
+      datamap["offsetLeft"] -= datamap["pos1"];
+      datamap["offsetTop"] -= datamap["pos2"];
+
+      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
+        s: datamap["pointerx"],
+        render: Text(
+          "pointerX: ${datamap["pointerx"]}",
+          style: const TextStyle(
+              fontSize: 14,
+              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+        ),
+      );
+    },
   };
 
   List<Widget> viewed() {
@@ -261,24 +320,18 @@ class Bodys {
         top: viewmap[key].y,
         left: viewmap[key].x,
         child: Listener(
-
           onPointerDown: (e) {
-            datamap["offsetLeft"] = viewmap[key].x;
-            datamap["offsetTop"] = viewmap[key].y;
+            datamap["key"] = key;
+            funcmap["onPointerDown"]();
           },
-
           onPointerUp: (e) {
-            if (funcmap.containsKey(viewmap[key].s)) {
-              funcmap[viewmap[key].s]();
-            }
-            datamap["pointer"].add(viewmap[key].s);
+            datamap["key"] = key;
+            funcmap["onPointerUp"]();
           },
-
           onPointerMove: (e) {
-            viewmap[key] = viewmap[key]
-                .copyWith(x: datamap["offsetLeft"], y: datamap["offsetTop"]);
+            //datamap["key"] = key;
+            funcmap["onPointerMove"]();
           },
-
           child: viewmap[key].render,
         ),
       ));

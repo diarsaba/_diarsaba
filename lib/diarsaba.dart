@@ -34,8 +34,8 @@ class _DiarsabaState extends State<Diarsaba> {
         setState(() {});
       },
       onPointerDown: (event) {
-        bodys.datamap["pointerx"] = event.position.dx;
-        bodys.datamap["pointery"] = event.position.dy;
+        /* bodys.datamap["pointerx"] = event.position.dx;
+        bodys.datamap["pointery"] = event.position.dy; */
 
         bodys.funcmap["pointerdown"]();
 
