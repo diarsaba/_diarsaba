@@ -121,10 +121,54 @@ class Bodys {
     "pos4": 0,
     "offsetTop": 0,
     "offsetLeft": 0,
+    //instrucciones
+
+    "step1": ["minus", "pos1", "pos3", "pointerx"],
+    "step2": ["minus", "pos2", "pos4", "pointery"],
+    "step3": ["assign", "pos3", "pointerx"],
+    "step4": ["assign", "pos4", "pointery"],
+
+    "step5": ["minus", "offsetLeft", "offsetLeft", "pos1"],
+    "step6": ["minus", "offsetTop", "offsetTop", "pos2"],
+    "step7": ["temp"],
+    "step8": ["temp1"],
+
+    //funciones
+    "pointermove": [
+      "step1",
+      "step2",
+      "step3",
+      "step4",
+      "step5",
+      "step6",
+      "step7"
+    ],
+    "pointerhover": ["step8"]
   };
 
   // for functions
   late Map<String, dynamic> funcmap = {
+    "temp1": () {
+      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
+        render: Text(
+          "pointerX: ${datamap["pointerx"]}",
+          style: const TextStyle(
+              fontSize: 14,
+              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+        ),
+      );
+    },
+    "temp": () {
+      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
+        s: datamap["pointerx"],
+        render: Text(
+          "pointerX: ${datamap["pointerx"]}",
+          style: const TextStyle(
+              fontSize: 14,
+              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+        ),
+      );
+    },
     "double": () {
       viewmap.addAll({
         "A": Body(
@@ -239,17 +283,15 @@ class Bodys {
     "ultimo": () {
       //datamap["pointer"]
     },
-    
     "pointerdown": () {
       datamap["pos3"] = datamap["pointerx"];
       datamap["pos4"] = datamap["pointery"];
     },
     "pointerup": () {},
-    
     "compatible": () {},
-    "reduce": () {
-      datamap[datamap["pointer"][0]] =
-          datamap[datamap["pointer"][1]] - datamap[datamap["pointer"][2]];
+    "minus": () {
+      datamap[datamap["pointer"][1]] =
+          datamap[datamap["pointer"][2]] - datamap[datamap["pointer"][3]];
     },
     "add": () {
       datamap[datamap["pointer"][0]] =
@@ -263,52 +305,36 @@ class Bodys {
       datamap[datamap["pointer"][0]] =
           datamap[datamap["pointer"][1]] / datamap[datamap["pointer"][2]];
     },
-    "asing": () {
-      datamap[datamap["pointer"][0]] = datamap[datamap["pointer"][1]];
+    "assign": () {
+      datamap[datamap["pointer"][1]] = datamap[datamap["pointer"][2]];
     },
     "onPointerDown": () {
       datamap["offsetLeft"] = viewmap[datamap["key"]].x;
       datamap["offsetTop"] = viewmap[datamap["key"]].y;
     },
     "onPointerUp": () {
-      if (funcmap.containsKey(viewmap[datamap["key"]].s)) {
+      if (funcmap.containsKey(viewmap[datamap["key"]].key)) {
         funcmap[viewmap[datamap["key"]].s]();
       }
-      datamap["pointer"].add(viewmap[datamap["key"]].s);
+      datamap["pointer"].add(viewmap[datamap["key"]].key);
     },
     "onPointerMove": () {
       viewmap[datamap["key"]] = viewmap[datamap["key"]]
           .copyWith(x: datamap["offsetLeft"], y: datamap["offsetTop"]);
     },
     "pointerhover": () {
-      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
-        s: datamap["pointerx"],
-        render: Text(
-          "pointerX: ${datamap["pointerx"]}",
-          style: const TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-      );
+      for (String func in datamap["pointerhover"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
     },
     "pointermove": () {
-      datamap["pos1"] = datamap["pos3"] - datamap["pointerx"];
-      datamap["pos2"] = datamap["pos4"] - datamap["pointery"];
-      datamap["pos3"] = datamap["pointerx"];
-      datamap["pos4"] = datamap["pointery"];
+      //debe tener una lista con las funciones a ejecutar
 
-      datamap["offsetLeft"] -= datamap["pos1"];
-      datamap["offsetTop"] -= datamap["pos2"];
-
-      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
-        s: datamap["pointerx"],
-        render: Text(
-          "pointerX: ${datamap["pointerx"]}",
-          style: const TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-      );
+      for (String func in datamap["pointermove"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
     },
   };
 
