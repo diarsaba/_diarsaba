@@ -143,11 +143,27 @@ class Bodys {
       "step6",
       "step7"
     ],
-    "pointerhover": ["step8"]
+    "pointerhover": ["step8"],
+
+    "step9": ["get", "offsetLeft", "x", "key"],
+    "step10": ["get", "offsetTop", "y", "key"],
+
+    "onPointerDown": ["step9", "step10"],
   };
 
   // for functions
   late Map<String, dynamic> funcmap = {
+    "get": () {
+      if (datamap["pointer"][2] == "x") {
+        datamap[datamap["pointer"][1]] =
+            viewmap[datamap[datamap["pointer"][3]]].x;
+      }
+
+      if (datamap["pointer"][2] == "y") {
+        datamap[datamap["pointer"][1]] =
+            viewmap[datamap[datamap["pointer"][3]]].y;
+      }
+    },
     "temp1": () {
       viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
         render: Text(
@@ -277,7 +293,6 @@ class Bodys {
       viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
     "ocultar": () {
-      print(datamap["pointer"]);
       viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
     "ultimo": () {
@@ -309,8 +324,10 @@ class Bodys {
       datamap[datamap["pointer"][1]] = datamap[datamap["pointer"][2]];
     },
     "onPointerDown": () {
-      datamap["offsetLeft"] = viewmap[datamap["key"]].x;
-      datamap["offsetTop"] = viewmap[datamap["key"]].y;
+      for (String func in datamap["onPointerDown"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
     },
     "onPointerUp": () {
       if (funcmap.containsKey(viewmap[datamap["key"]].key)) {
@@ -329,8 +346,6 @@ class Bodys {
       }
     },
     "pointermove": () {
-      //debe tener una lista con las funciones a ejecutar
-
       for (String func in datamap["pointermove"]) {
         datamap["pointer"] = datamap[func];
         funcmap[datamap[func][0]]();
