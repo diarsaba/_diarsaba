@@ -121,6 +121,8 @@ class Bodys {
     "pos4": 0,
     "offsetTop": 0,
     "offsetLeft": 0,
+    "ison": false,
+    "funcmap": funcmap,
     //instrucciones
 
     "step1": ["minus", "pos1", "pos3", "pointerx"],
@@ -149,10 +151,55 @@ class Bodys {
     "step10": ["get", "offsetTop", "y", "key"],
 
     "onPointerDown": ["step9", "step10"],
+
+    "step11": ["assign", "pos3", "pointerx"],
+    "step12": ["assign", "pos4", "pointery"],
+    "pointerdown": ["step11", "step12"],
+
+    "step13": ["temp_updatewidget", "x", "offsetLeft", "key"],
+    "step14": ["temp_updatewidget", "y", "offsetTop", "key"],
+    "onPointerMove": ["step13", "step14"],
+
+    // if (funcmap.containsKey(viewmap[datamap["key"]].key)) {
+    //     funcmap[viewmap[datamap["key"]].s]();
+    //   }
+    //   datamap["pointer"].add(viewmap[datamap["key"]].key);
+    "step15": ["append", "pointer", "key"],
+    "step16": ["contains_funcmap","ison", "funcmap", "key"],
+    "step17": ["if", "ison", "True", "step18", "step19"],
+    "step18": ["execute_button", "key"],
+    "step19": [],
+    "onPointerUp": ["step15", "step17"]
   };
 
   // for functions
   late Map<String, dynamic> funcmap = {
+    "contains_funcmap":(){
+      datamap["pointer"][1] =  datamap[datamap["pointer"][2]].containsKey(datamap[datamap["pointer"][3]]);
+    },
+    "if":(){
+      if(datamap["pointer"][1]){
+        funcmap[datamap[datamap["pointer"][2]]]();
+      }else{
+        funcmap[datamap[datamap["pointer"][3]]]();
+      }
+    },
+    "execute_button":(){
+      funcmap[datamap[datamap["pointer"][1]]]();
+    },
+    "append": () {
+      datamap[datamap["pointer"][1]].add(datamap[datamap["pointer"][2]]);
+    },
+    "temp_updatewidget": () {
+      if (datamap["pointer"][1] == "x") {
+        viewmap[datamap["pointer"][3]] = viewmap[datamap[datamap["pointer"][3]]]
+            .copyWith(x: datamap[datamap["pointer"][2]]);
+      }
+      if (datamap["pointer"][1] == "y") {
+        viewmap[datamap[datamap["pointer"][3]]] =
+            viewmap[datamap["pointer"][3]].copyWith(y: datamap["offsetTop"]);
+      }
+    },
     "get": () {
       if (datamap["pointer"][2] == "x") {
         datamap[datamap["pointer"][1]] =
@@ -298,12 +345,7 @@ class Bodys {
     "ultimo": () {
       //datamap["pointer"]
     },
-    "pointerdown": () {
-      datamap["pos3"] = datamap["pointerx"];
-      datamap["pos4"] = datamap["pointery"];
-    },
-    "pointerup": () {},
-    "compatible": () {},
+
     "minus": () {
       datamap[datamap["pointer"][1]] =
           datamap[datamap["pointer"][2]] - datamap[datamap["pointer"][3]];
@@ -323,21 +365,31 @@ class Bodys {
     "assign": () {
       datamap[datamap["pointer"][1]] = datamap[datamap["pointer"][2]];
     },
+
+    "pointerup": () {},
+    "onPointerUp": () {
+      for (String func in datamap["onPointerUp"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
+    },
+    "onPointerMove": () {
+      for (String func in datamap["onPointerMove"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
+    },
+    "pointerdown": () {
+      for (String func in datamap["pointerdown"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
+    },
     "onPointerDown": () {
       for (String func in datamap["onPointerDown"]) {
         datamap["pointer"] = datamap[func];
         funcmap[datamap[func][0]]();
       }
-    },
-    "onPointerUp": () {
-      if (funcmap.containsKey(viewmap[datamap["key"]].key)) {
-        funcmap[viewmap[datamap["key"]].s]();
-      }
-      datamap["pointer"].add(viewmap[datamap["key"]].key);
-    },
-    "onPointerMove": () {
-      viewmap[datamap["key"]] = viewmap[datamap["key"]]
-          .copyWith(x: datamap["offsetLeft"], y: datamap["offsetTop"]);
     },
     "pointerhover": () {
       for (String func in datamap["pointerhover"]) {
@@ -351,6 +403,13 @@ class Bodys {
         funcmap[datamap[func][0]]();
       }
     },
+
+    //events functions
+    //arithmetic functions
+    //logical
+    //view widgets functions
+    //special functions
+    //temporal functions
   };
 
   List<Widget> viewed() {
