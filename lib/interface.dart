@@ -113,6 +113,8 @@ class Bodys {
   late Map<String, dynamic> datamap = {
     "pointerx": 0,
     "pointery": 0,
+    "True": true,
+    "False":false,
     //this below will be created on body interaccion or user interface
     "pointer": [],
     "pos1": 0,
@@ -125,13 +127,13 @@ class Bodys {
     "funcmap": funcmap,
     //instrucciones
 
-    "step1": ["minus", "pos1", "pos3", "pointerx"],
-    "step2": ["minus", "pos2", "pos4", "pointery"],
+    "step1": ["sub", "pos1", "pos3", "pointerx"],
+    "step2": ["sub", "pos2", "pos4", "pointery"],
     "step3": ["assign", "pos3", "pointerx"],
     "step4": ["assign", "pos4", "pointery"],
 
-    "step5": ["minus", "offsetLeft", "offsetLeft", "pos1"],
-    "step6": ["minus", "offsetTop", "offsetTop", "pos2"],
+    "step5": ["sub", "offsetLeft", "offsetLeft", "pos1"],
+    "step6": ["sub", "offsetTop", "offsetTop", "pos2"],
     "step7": ["temp"],
     "step8": ["temp1"],
 
@@ -165,31 +167,43 @@ class Bodys {
     //   }
     //   datamap["pointer"].add(viewmap[datamap["key"]].key);
     "step15": ["append", "pointer", "key"],
-    "step16": ["contains_funcmap","ison", "funcmap", "key"],
+    "step16": ["contains_funcmap", "ison", "funcmap", "key"],
     "step17": ["if", "ison", "True", "step18", "step19"],
     "step18": ["execute_button", "key"],
-    "step19": [],
+    "step19": [""],
     "onPointerUp": ["step15", "step17"]
   };
 
   // for functions
   late Map<String, dynamic> funcmap = {
-    "contains_funcmap":(){
-      datamap["pointer"][1] =  datamap[datamap["pointer"][2]].containsKey(datamap[datamap["pointer"][3]]);
+    
+    //cosas con funcmap
+    "":(){
+      print("null funct");
     },
-    "if":(){
-      if(datamap["pointer"][1]){
-        funcmap[datamap[datamap["pointer"][2]]]();
-      }else{
+    "if": () {
+      //la direccion es incorrecta hay que acceder a mas profundidad
+      print("${datamap[datamap["pointer"][3]]} ${datamap[datamap["pointer"][4]]}");
+      if (datamap[datamap["pointer"][1]] == datamap[datamap["pointer"][2]]) {
         funcmap[datamap[datamap["pointer"][3]]]();
+      } else {
+        funcmap[datamap[datamap["pointer"][4]]]();
       }
     },
-    "execute_button":(){
+    "contains_funcmap": () {
+      datamap["pointer"][1] = datamap[datamap["pointer"][2]]
+          .containsKey(datamap[datamap["pointer"][3]]);
+    },
+    "execute_button": () {
       funcmap[datamap[datamap["pointer"][1]]]();
     },
+
+    //cosas con el datamap
     "append": () {
       datamap[datamap["pointer"][1]].add(datamap[datamap["pointer"][2]]);
     },
+
+    //cosas con el view map
     "temp_updatewidget": () {
       if (datamap["pointer"][1] == "x") {
         viewmap[datamap["pointer"][3]] = viewmap[datamap[datamap["pointer"][3]]]
@@ -211,6 +225,7 @@ class Bodys {
             viewmap[datamap[datamap["pointer"][3]]].y;
       }
     },
+
     "temp1": () {
       viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
         render: Text(
@@ -345,16 +360,52 @@ class Bodys {
     "ultimo": () {
       //datamap["pointer"]
     },
+    //list functios
+    //create
+    //delete
+    //add
+    //remove
+    //insert
+    //
 
-    "minus": () {
+    //comparation
+    "greater": () {
+      datamap[datamap["pointer"][1]] =
+          datamap[datamap["pointer"][2]] > datamap[datamap["pointer"][3]];
+    },
+    "smaller": () {
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] < datamap[datamap["pointer"][2]];
+    },
+    "equal": () {
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] == datamap[datamap["pointer"][2]];
+    },
+    "different": () {
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] != datamap[datamap["pointer"][2]];
+    },
+
+    //logic
+    "and": () {
+      datamap[datamap["pointer"][1]] =
+          datamap[datamap["pointer"][2]] && datamap[datamap["pointer"][3]];
+    },
+    "or": () {
+      datamap[datamap["pointer"][0]] =
+          datamap[datamap["pointer"][1]] || datamap[datamap["pointer"][2]];
+    },
+
+    //arithmetic
+    "sub": () {
       datamap[datamap["pointer"][1]] =
           datamap[datamap["pointer"][2]] - datamap[datamap["pointer"][3]];
     },
-    "add": () {
+    "sum": () {
       datamap[datamap["pointer"][0]] =
           datamap[datamap["pointer"][1]] + datamap[datamap["pointer"][2]];
     },
-    "multi": () {
+    "mul": () {
       datamap[datamap["pointer"][0]] =
           datamap[datamap["pointer"][1]] * datamap[datamap["pointer"][2]];
     },
@@ -366,7 +417,13 @@ class Bodys {
       datamap[datamap["pointer"][1]] = datamap[datamap["pointer"][2]];
     },
 
-    "pointerup": () {},
+    //events
+    "pointerup": () {
+      for (String func in datamap["pointerup"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
+    },
     "onPointerUp": () {
       for (String func in datamap["onPointerUp"]) {
         datamap["pointer"] = datamap[func];
@@ -403,13 +460,6 @@ class Bodys {
         funcmap[datamap[func][0]]();
       }
     },
-
-    //events functions
-    //arithmetic functions
-    //logical
-    //view widgets functions
-    //special functions
-    //temporal functions
   };
 
   List<Widget> viewed() {
