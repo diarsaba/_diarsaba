@@ -114,9 +114,10 @@ class Bodys {
     "pointerx": 0,
     "pointery": 0,
     "True": true,
-    "False":false,
+    "False": false,
     //this below will be created on body interaccion or user interface
     "pointer": [],
+    "clicked": [],
     "pos1": 0,
     "pos2": 0,
     "pos3": 0,
@@ -162,36 +163,35 @@ class Bodys {
     "step14": ["temp_updatewidget", "y", "offsetTop", "key"],
     "onPointerMove": ["step13", "step14"],
 
-    // if (funcmap.containsKey(viewmap[datamap["key"]].key)) {
-    //     funcmap[viewmap[datamap["key"]].s]();
-    //   }
-    //   datamap["pointer"].add(viewmap[datamap["key"]].key);
     "step15": ["append", "pointer", "key"],
     "step16": ["contains_funcmap", "ison", "funcmap", "key"],
     "step17": ["if", "ison", "True", "step18", "step19"],
     "step18": ["execute_button", "key"],
     "step19": [""],
-    "onPointerUp": ["step15", "step17"]
+    "onPointerUp": ["step15","step16", "step17"],
+
+    "append_clicked":["append", "clicked", "key"],
+    "pointerup": ["append_clicked"]
   };
 
   // for functions
   late Map<String, dynamic> funcmap = {
-    
+ 
     //cosas con funcmap
-    "":(){
+    "": () {
       print("null funct");
     },
     "if": () {
-      //la direccion es incorrecta hay que acceder a mas profundidad
-      print("${datamap[datamap["pointer"][3]]} ${datamap[datamap["pointer"][4]]}");
       if (datamap[datamap["pointer"][1]] == datamap[datamap["pointer"][2]]) {
-        funcmap[datamap[datamap["pointer"][3]]]();
+        datamap["pointer"] = datamap[datamap["pointer"][3]];
+        funcmap[datamap["pointer"][0]]();
       } else {
-        funcmap[datamap[datamap["pointer"][4]]]();
+        datamap["pointer"] = datamap[datamap["pointer"][4]];
+        funcmap[datamap["pointer"][0]]();
       }
     },
     "contains_funcmap": () {
-      datamap["pointer"][1] = datamap[datamap["pointer"][2]]
+      datamap[datamap["pointer"][1]] = datamap[datamap["pointer"][2]]
           .containsKey(datamap[datamap["pointer"][3]]);
     },
     "execute_button": () {
@@ -202,6 +202,7 @@ class Bodys {
     "append": () {
       datamap[datamap["pointer"][1]].add(datamap[datamap["pointer"][2]]);
     },
+    
 
     //cosas con el view map
     "temp_updatewidget": () {
@@ -352,7 +353,8 @@ class Bodys {
       });
     },
     "borrar": () {
-      viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
+      print("sssb ${datamap["pointer"]} ${datamap["clicked"]}");
+      viewmap.remove(datamap["clicked"][datamap["clicked"].length - 1]);
     },
     "ocultar": () {
       viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
