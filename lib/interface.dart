@@ -59,18 +59,6 @@ class Bodys {
               backgroundColor: Color.fromARGB(255, 245, 245, 245)),
         ),
         mode: "text"),
-    "ultimo": Body(
-        x: 210,
-        y: 50,
-        s: "ultimo",
-        key: "ultimo",
-        render: const Text(
-          "ultimo",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
     "offsetLeft": Bodyd(
         x: 0,
         y: 100,
@@ -168,15 +156,14 @@ class Bodys {
     "step17": ["if", "ison", "True", "step18", "step19"],
     "step18": ["execute_button", "key"],
     "step19": [""],
-    "onPointerUp": ["step15","step16", "step17"],
+    "onPointerUp": ["step15", "step16", "step17"],
 
-    "append_clicked":["append", "clicked", "key"],
+    "append_clicked": ["append", "clicked", "key"],
     "pointerup": ["append_clicked"]
   };
 
   // for functions
   late Map<String, dynamic> funcmap = {
- 
     //cosas con funcmap
     "": () {
       print("null funct");
@@ -202,7 +189,6 @@ class Bodys {
     "append": () {
       datamap[datamap["pointer"][1]].add(datamap[datamap["pointer"][2]]);
     },
-    
 
     //cosas con el view map
     "temp_updatewidget": () {
@@ -359,16 +345,20 @@ class Bodys {
     "ocultar": () {
       viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
     },
-    "ultimo": () {
-      //datamap["pointer"]
+    //list
+    "add_list": () {
+      datamap[datamap["pointer"][1]].append(datamap[datamap["pointer"][1]]);
     },
-    //list functios
-    //create
-    //delete
-    //add
-    //remove
-    //insert
-    //
+    "create_list": () {
+      datamap.addAll({datamap["pointer"][1]: datamap["pointer"][2]});
+    },
+    "remove_list": () {
+      datamap[datamap["pointer"][1]].remove(datamap[datamap["pointer"][2]]);
+    },
+    "insert_list": () {
+      datamap[datamap["pointer"][1]].insert(
+          datamap[datamap["pointer"][2]], datamap[datamap["pointer"][3]]);
+    },
 
     //comparation
     "greater": () {
