@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
 
+class Stroke {
+  final String string;
+
+  Stroke({required this.string});
+
+  Stroke copyWith({
+    String? string,
+  }) {
+    return Stroke(
+      string: string ?? this.string,
+    );
+  }
+}
+
+
 class Body {
   final String s;
 
@@ -38,10 +53,9 @@ class Body {
   }
 }
 
-
 class Bodyd {
   final double s;
-  
+
   final double x;
   final double y;
 

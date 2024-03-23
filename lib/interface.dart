@@ -47,18 +47,6 @@ class Bodys {
               backgroundColor: Color.fromARGB(255, 245, 245, 245)),
         ),
         mode: "text"),
-    "ocultar": Body(
-        x: 150,
-        y: 50,
-        s: "ocultar",
-        key: "ocultar",
-        render: const Text(
-          "ocultar",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
     "offsetLeft": Bodyd(
         x: 0,
         y: 100,
@@ -99,8 +87,21 @@ class Bodys {
 
   // for data
   late Map<String, dynamic> datamap = {
+    //my buttons
+
+    "onview":["string", "double", "borrar", "pointerx", "offsetLeft", "offsetTop"],
+
+    "list_a":[],
+    "list_b":[],
+    "string": ["execute", "list_a"],
+    "double": ["execute", "list_b"],
+
+    "doubles": ["double", "list_b"],
+
+    //
     "pointerx": 0,
     "pointery": 0,
+    //constants
     "True": true,
     "False": false,
     //this below will be created on body interaccion or user interface
@@ -168,6 +169,12 @@ class Bodys {
     "": () {
       print("null funct");
     },
+    "execute": () {
+      for (String func in datamap["pointerup"]) {
+        datamap["pointer"] = datamap[func];
+        funcmap[datamap[func][0]]();
+      }
+    },
     "if": () {
       if (datamap[datamap["pointer"][1]] == datamap[datamap["pointer"][2]]) {
         datamap["pointer"] = datamap[datamap["pointer"][3]];
@@ -193,12 +200,14 @@ class Bodys {
     //cosas con el view map
     "temp_updatewidget": () {
       if (datamap["pointer"][1] == "x") {
-        viewmap[datamap["pointer"][3]] = viewmap[datamap[datamap["pointer"][3]]]
-            .copyWith(x: datamap[datamap["pointer"][2]]);
+        viewmap[datamap[datamap["pointer"][3]]] =
+            viewmap[datamap[datamap["pointer"][3]]]
+                .copyWith(x: datamap[datamap["pointer"][2]]);
       }
       if (datamap["pointer"][1] == "y") {
         viewmap[datamap[datamap["pointer"][3]]] =
-            viewmap[datamap["pointer"][3]].copyWith(y: datamap["offsetTop"]);
+            viewmap[datamap[datamap["pointer"][3]]]
+                .copyWith(y: datamap[datamap["pointer"][2]]);
       }
     },
     "get": () {
@@ -286,7 +295,7 @@ class Bodys {
             mode: "edit")
       });
     },
-    "string": () {
+    "string_remove": () {
       viewmap.addAll({
         "A": Body(
             x: 10,
@@ -338,13 +347,13 @@ class Bodys {
             mode: "edit")
       });
     },
-    "borrar": () {
-      print("sssb ${datamap["pointer"]} ${datamap["clicked"]}");
+    "viewremove": () {
       viewmap.remove(datamap["clicked"][datamap["clicked"].length - 1]);
     },
-    "ocultar": () {
-      viewmap.remove(datamap["pointer"][datamap["pointer"].length - 1]);
+    "viewadd": () {
+      viewmap.addAll({datamap["pointer"][1]: datamap["pointer"][2]});
     },
+
     //list
     "add_list": () {
       datamap[datamap["pointer"][1]].append(datamap[datamap["pointer"][1]]);
