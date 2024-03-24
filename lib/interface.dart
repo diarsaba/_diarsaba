@@ -9,90 +9,29 @@ class Bodys {
   final _focus = FocusNode();
   final _controller = TextEditingController(text: "A");
 
-  // for widgets
-  late Map<String, dynamic> viewmap = {
-    "string": Body(
-        x: 0,
-        y: 50,
-        s: "string",
-        key: "string",
-        render: const Text(
-          "string",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
-    "double": Body(
-        x: 50,
-        y: 50,
-        s: "double",
-        key: "double",
-        render: const Text(
-          "double",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
-    "borrar": Body(
-        x: 100,
-        y: 50,
-        s: "borrar",
-        key: "borrar",
-        render: const Text(
-          "borrar",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
-    "offsetLeft": Bodyd(
-        x: 0,
-        y: 100,
-        s: 0,
-        key: "offsetLeft",
-        render: const Text(
-          "offsetLeft: 0",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
-    "offsetTop": Bodyd(
-        x: 100,
-        y: 100,
-        s: 0,
-        key: "offsetTop",
-        render: const Text(
-          "offsetTop: 0",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
-    "pointerX": Bodyd(
-        x: 260,
-        y: 50,
-        s: 0,
-        key: "pointerX",
-        render: const Text(
-          "pointerX: 0",
-          style: TextStyle(
-              fontSize: 14,
-              backgroundColor: Color.fromARGB(255, 245, 245, 245)),
-        ),
-        mode: "text"),
-  };
-
   // for data
   late Map<String, dynamic> datamap = {
     //my buttons
+    "view": {
+      "string": [10.0, 10.0, "string"],
+      "double": [50.0, 10.0, "double"],
+      "borrar": [100.0, 10.0, "borrar"],
+      "offsetLeft": [150.0, 10.0, "offsetLeft"],
+      "offsetTop": [200.0, 10.0, "offsetTop"],
+      "pointerX": [250.0, 10.0, "pointerX"],
+    },
 
-    "onview":["string", "double", "borrar", "pointerx", "offsetLeft", "offsetTop"],
+    "onview": [
+      "string",
+      "double",
+      "borrar",
+      "pointerx",
+      "offsetLeft",
+      "offsetTop"
+    ],
 
-    "list_a":[],
-    "list_b":[],
+    "list_a": [],
+    "list_b": [],
     "string": ["execute", "list_a"],
     "double": ["execute", "list_b"],
 
@@ -200,30 +139,30 @@ class Bodys {
     //cosas con el view map
     "temp_updatewidget": () {
       if (datamap["pointer"][1] == "x") {
-        viewmap[datamap[datamap["pointer"][3]]] =
-            viewmap[datamap[datamap["pointer"][3]]]
+        datamap["view"][datamap[datamap["pointer"][3]]] =
+            datamap["view"][datamap[datamap["pointer"][3]]]
                 .copyWith(x: datamap[datamap["pointer"][2]]);
       }
       if (datamap["pointer"][1] == "y") {
-        viewmap[datamap[datamap["pointer"][3]]] =
-            viewmap[datamap[datamap["pointer"][3]]]
+        datamap["view"][datamap[datamap["pointer"][3]]] =
+            datamap["view"][datamap[datamap["pointer"][3]]]
                 .copyWith(y: datamap[datamap["pointer"][2]]);
       }
     },
     "get": () {
       if (datamap["pointer"][2] == "x") {
         datamap[datamap["pointer"][1]] =
-            viewmap[datamap[datamap["pointer"][3]]].x;
+            datamap["view"][datamap[datamap["pointer"][3]]].x;
       }
 
       if (datamap["pointer"][2] == "y") {
         datamap[datamap["pointer"][1]] =
-            viewmap[datamap[datamap["pointer"][3]]].y;
+            datamap["view"][datamap[datamap["pointer"][3]]].y;
       }
     },
 
     "temp1": () {
-      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
+      datamap["view"]["pointerX"] = (datamap["view"]["pointerX"] as Bodyd).copyWith(
         render: Text(
           "pointerX: ${datamap["pointerx"]}",
           style: const TextStyle(
@@ -233,7 +172,7 @@ class Bodys {
       );
     },
     "temp": () {
-      viewmap["pointerX"] = (viewmap["pointerX"] as Bodyd).copyWith(
+      datamap["view"]["pointerX"] = (datamap["view"]["pointerX"] as Bodyd).copyWith(
         s: datamap["pointerx"],
         render: Text(
           "pointerX: ${datamap["pointerx"]}",
@@ -244,7 +183,7 @@ class Bodys {
       );
     },
     "double": () {
-      viewmap.addAll({
+      datamap["view"].addAll({
         "A": Body(
             x: 10,
             y: 10,
@@ -261,7 +200,7 @@ class Bodys {
                   }
                 },
                 onSubmitted: (t) {
-                  viewmap.addAll({
+                  datamap["view"].addAll({
                     t: Bodyd(
                         x: 10,
                         y: 100,
@@ -277,7 +216,7 @@ class Bodys {
                         mode: "text"),
                   });
 
-                  viewmap.remove("A");
+                  datamap["view"].remove("A");
                   _controller.text = "A";
 
                   setstate();
@@ -292,11 +231,11 @@ class Bodys {
                 enableInteractiveSelection: true,
               ),
             ),
-            mode: "edit")
+            )
       });
     },
     "string_remove": () {
-      viewmap.addAll({
+      datamap["view"].addAll({
         "A": Body(
             x: 10,
             y: 10,
@@ -313,7 +252,7 @@ class Bodys {
                   }
                 },
                 onSubmitted: (t) {
-                  viewmap.addAll({
+                  datamap["view"].addAll({
                     t: Body(
                         x: 10,
                         y: 100,
@@ -326,10 +265,10 @@ class Bodys {
                               backgroundColor:
                                   Color.fromARGB(255, 245, 245, 245)),
                         ),
-                        mode: "text"),
+                        ),
                   });
 
-                  viewmap.remove("A");
+                  datamap["view"].remove("A");
                   _controller.text = "A";
 
                   setstate();
@@ -344,14 +283,14 @@ class Bodys {
                 enableInteractiveSelection: true,
               ),
             ),
-            mode: "edit")
+            )
       });
     },
     "viewremove": () {
-      viewmap.remove(datamap["clicked"][datamap["clicked"].length - 1]);
+      datamap["view"].remove(datamap["clicked"][datamap["clicked"].length - 1]);
     },
     "viewadd": () {
-      viewmap.addAll({datamap["pointer"][1]: datamap["pointer"][2]});
+      datamap["view"].addAll({datamap["pointer"][1]: datamap["pointer"][2]});
     },
 
     //list
@@ -464,12 +403,13 @@ class Bodys {
   };
 
   List<Widget> viewed() {
-    List<Widget> temp = [];
+    List<Widget> viewline = [];
 
-    viewmap.forEach((key, _) {
-      temp.add(Positioned(
-        top: viewmap[key].y,
-        left: viewmap[key].x,
+    datamap["view"].forEach((key, _) {
+      //x y string
+      viewline.add(Positioned(
+        top: datamap["view"][key][0],
+        left: datamap["view"][key][1],
         child: Listener(
           onPointerDown: (e) {
             datamap["key"] = key;
@@ -483,11 +423,16 @@ class Bodys {
             //datamap["key"] = key;
             funcmap["onPointerMove"]();
           },
-          child: viewmap[key].render,
+          child: Text(
+            datamap["view"][key][2],
+            style: const TextStyle(
+                fontSize: 14,
+                backgroundColor: Color.fromARGB(255, 245, 245, 245)),
+          ),
         ),
       ));
     });
 
-    return temp;
+    return viewline;
   }
 }
